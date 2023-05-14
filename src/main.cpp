@@ -1,15 +1,8 @@
-// code for server
 #include "server.hpp"
 #include <iostream>
-//bool LOCAL_HOST {false};
-//int DESIRED_PORT {0};
-//char MOUNT_PATH[500];
-//int DESIRED_AUDIENCE {0};
-//int NETWORK_IP {0};
 
 int main() {
-  // fstream confile;
-  // lconfile.open("/share/.AN-CODE");
+
   std::cout << "***************** SERVER SETUP *********************"
             << std::endl;
   std::cout << "\033[1;33mDesired number of worker node \033[1;32m"
@@ -37,6 +30,5 @@ int main() {
             << "        ";
   std::cin >> NETWORK_IP;
   std::cout << "\033[0m****************************************************"<< std::endl;
-  // ip_address();
    server_start();
 }

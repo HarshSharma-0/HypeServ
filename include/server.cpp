@@ -11,6 +11,7 @@
 #include <stdio.h>
 #include <sys/socket.h>
 #include <iostream>
+#include <fstream>
 #include "server.hpp"
 
 int WORKER_NUMBER{0};
@@ -41,9 +42,10 @@ void server_start() {
   }
   socklen_t clilen = sizeof(cli_addr);
   int cfd = accept(server_fd, (struct sockaddr *)&socket_qe, &socket_len);
-  
   if (shutdown(server_fd, SHUT_RDWR) < 0) {
     std::cout << "error shutdown" << std::endl;
     shutdown(server_fd, SHUT_RDWR);
   }
+    std::cout<<"shutdown conolete";
+
 }
