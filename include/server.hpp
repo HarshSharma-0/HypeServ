@@ -8,6 +8,6 @@ extern char MOUNT_PATH[500];
 extern int DESIRED_AUDIENCE;
 extern int NETWORK_IP;
 
-void server_start();
+extern void server_start();
 
 #endif
