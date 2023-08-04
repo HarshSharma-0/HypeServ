@@ -16,7 +16,7 @@ int main() {
     }
     else{
        std::cout<<VT100_COLOR_RED<< "Please setup IN_SERVER variable path"<<VT100_COLOR_RESET<<std::endl;
-       std::cout<<VT100_COLOR_YELLOW<<"setup path if yes press 1 and enter else press 0 to exit :-"<<VT100_COLOR_RESET<<std::endl;
+       std::cout<<VT100_COLOR_YELLOW<<"setup path if yes press 1 and enter else press 0 to exit ---------- "<<VT100_COLOR_RESET;
        std::cin>>path_setup;
  }
 if(path_setup==1){
