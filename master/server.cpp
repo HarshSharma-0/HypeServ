@@ -14,13 +14,22 @@
 #include <fstream>
 #include "server.hpp"
 
-int WORKER_NUMBER{0};
-bool LOCAL_HOST{false};
-int DESIRED_PORT{0};
-char MOUNT_PATH[500];
-int DESIRED_AUDIENCE{0};
-int NETWORK_IP{0};
-
+struct SERVER_CONFIG {
+    char* serverName;
+    int portNumber;
+    char* ipAddress;
+    std::string mountPath;
+    bool isLocalHost;
+    int protocolHttp;
+    char* proxy;
+    char* internalDnsResolver;
+struct WORKER {
+    int desiredWorkerNo;
+    int audiencePerWorker;
+    char* mountPathWorker;
+};
+};
+SERVER_CONFIG SERVER_CONFIG;
 void server_start() {
 
   struct sockaddr_in socket_qe, cli_addr;
@@ -29,7 +38,7 @@ void server_start() {
     std::cout << "error createing socket  " << strerror(errno) << std::endl;
   };
   socket_qe.sin_family = AF_INET;
-  socket_qe.sin_port = htons(DESIRED_PORT);
+  socket_qe.sin_port = htons(SERVER_CONFIG.portNumber);
   socket_qe.sin_addr.s_addr = INADDR_ANY;
   socklen_t socket_len = sizeof(socket_qe);
 
