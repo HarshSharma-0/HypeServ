@@ -1,4 +1,3 @@
-#include <server.hpp>
 #include <iostream>
 #include <cstdlib>
 #include <VT100.hpp>

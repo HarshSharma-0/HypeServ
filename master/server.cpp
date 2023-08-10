@@ -14,31 +14,17 @@
 #include <fstream>
 #include "server.hpp"
 
-struct SERVER_CONFIG {
-    char* serverName;
-    int portNumber;
-    char* ipAddress;
-    std::string mountPath;
-    bool isLocalHost;
-    int protocolHttp;
-    char* proxy;
-    char* internalDnsResolver;
-struct WORKER {
-    int desiredWorkerNo;
-    int audiencePerWorker;
-    char* mountPathWorker;
-};
-};
-SERVER_CONFIG SERVER_CONFIG;
-void server_start() {
+SERVER_CONFIG SERVER_CONFIG_t;
 
+void server_start() {
+/*
   struct sockaddr_in socket_qe, cli_addr;
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (server_fd < 0) {
     std::cout << "error createing socket  " << strerror(errno) << std::endl;
   };
   socket_qe.sin_family = AF_INET;
-  socket_qe.sin_port = htons(SERVER_CONFIG.portNumber);
+  socket_qe.sin_port = htons(SERVER_CONFIG_t.portNumber);
   socket_qe.sin_addr.s_addr = INADDR_ANY;
   socklen_t socket_len = sizeof(socket_qe);
 
@@ -55,6 +41,7 @@ void server_start() {
     std::cout << "error shutdown" << std::endl;
     shutdown(server_fd, SHUT_RDWR);
   }
-    std::cout<<"shutdown conolete";
+    std::cout<<"shutdown conolete"; */
+//std::cout<<SERVER_CONFIG_t.serverName;
 
 }
