@@ -76,7 +76,6 @@ SERVER_CONFIG_DATA.erase(std::remove(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DA
                    }
               else if(SERVER_CONFIG_DATA == "@end"){
                    parse_stop_server = true;
-                   goto ENSURE_HALT_EXECUTION;
                    }else{ continue; }
 
 }
@@ -118,7 +117,6 @@ else if ( SERVER_CONFIG_DATA == "WORKER:" ) {
 else{
      if( parse_stop_worker == true && parse_stop_server == true ){
         parse_stop = true;
-        std::cout<<"else called for var change"<<std::endl;
       }
 continue;
 }
