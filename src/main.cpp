@@ -51,9 +51,10 @@ else
   std::cout << "\033[1;33mselect network              \033[1;32m "
             << "        ";
   std::cin >> NETWORK_IP;
-  std::cout << "\033[0m****************************************************"<< std::endl;
-*/
-   //server_start();
+  std::cout << "\033[0m****************************************************"<< std::end;
+return 0;
+}
 
+*/
 return 0;
 }

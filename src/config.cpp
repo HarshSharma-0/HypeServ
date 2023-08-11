@@ -9,7 +9,7 @@ int setup_config_path(bool parse){
 std::fstream Bashfile;//common stream to access all files
 const char* config ="IN_SERVER"; // IN_SERVER config file env
 const char* IN_CONFIG_PATH {0};
-
+int WRITEHALT {0};
 
 if(parse == true){
       IN_CONFIG_PATH = getenv("IN_SERVER"); //extracting IN_SERVER file path
@@ -20,9 +20,26 @@ if(parse == true){
               if(Bashfile.is_open()){
                 parse_config_file(Bashfile);
               }
-                else{ 
+                else{
                      std::cout<<VT100_COLOR_RED<<"IN-config.in file opening error"<<VT100_COLOR_RESET<<std::endl; 
-                     return -1;
+                     std::cout<<VT100_COLOR_BLUE<<"create config file now enter 1 else 0            "<<VT100_COLOR_RESET;
+                     std::cin >> WRITEHALT;
+                       if(WRITEHALT == 1){
+                   SERVER_CONFIG_DATA = IN_CONFIG_PATH;
+                   SERVER_CONFIG_DATA += in_server_file;
+                   Bashfile.open(SERVER_CONFIG_DATA , std::ios::out);
+                      if(Bashfile.is_open()){
+                          write_config_file(Bashfile);
+                          Bashfile.close();
+                          std::cout<<VT100_COLOR_GREEN<<"IN_config.in file writing sucess"<<std::endl;
+         }
+            else{
+          std::cout<<VT100_COLOR_RED<<"in_config writing error using your path"<<VT100_COLOR_RESET<<std::endl;
+          return -1;
+
+          }
+
+ } else{ return -1;}
             }
      }
       else{
@@ -33,9 +50,7 @@ if(parse == true){
   }
 
 }else{
-
 const char* bash_rc_path = getenv("BASH"); // BASH  env extraction
-
 
 std::cout<<VT100_COLOR_GREEN<<"enter path or env for IN-config file"<<VT100_COLOR_YELLOW<<"[ env like ($my_variable) ] ---------- ";
 std::cin>>SERVER_CONFIG_DATA;
@@ -90,7 +105,7 @@ SERVER_CONFIG_DATA += in_server_file;
 
 Bashfile.open(SERVER_CONFIG_DATA , std::ios::out); // to open IN-config path
        if(Bashfile.is_open()){
-              Bashfile<<"heloo"<<std::endl;
+  //            write_config_file(Bashfile);
               Bashfile.close();
               std::cout<<VT100_COLOR_GREEN<<"IN_config.in file writing sucess"<<std::endl;
               std::cout<<VT100_COLOR_GREEN<<"IN_config.in file path"<<SERVER_CONFIG_DATA<<std::endl;
@@ -102,18 +117,20 @@ Bashfile.open(SERVER_CONFIG_DATA , std::ios::out); // to open IN-config path
 }
 else if(IN_CONFIG_PATH == nullptr)
 {
+
+
 SERVER_CONFIG_DATA += in_server_file;
 Bashfile.open(SERVER_CONFIG_DATA , std::ios::out);
 
           if(Bashfile.is_open()){
-              Bashfile<<"heloo"<<std::endl;
+              write_config_file(Bashfile);
               Bashfile.close();
               std::cout<<VT100_COLOR_GREEN<<"IN_config.in file writing sucess"<<std::endl;
          }
             else{
           std::cout<<VT100_COLOR_RED<<"in_config writing error using your path"<<VT100_COLOR_RESET<<std::endl;
           return -1;
-           
+
           }
 
 }else{

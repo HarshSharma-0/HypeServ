@@ -12,11 +12,10 @@ struct SERVER_CONFIG {
     char* internalDnsResolver {0};
 struct WORKER {
     int desiredWorkerNo {0};
-    int audiencePerWorker {0};
+    int connectionPerWorker {0};
     char* mountPathWorker {0};
 }WORKER;
 };
-
 extern SERVER_CONFIG SERVER_CONFIG_t;
 extern void server_start();
 
