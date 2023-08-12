@@ -12,5 +12,6 @@ file(GLOB SRCS
         "${PROJECT_SOURCE_DIR}/SERVER_HEAD/*"
         "${PROJECT_SOURCE_DIR}/SERVER_WORKER/*"
 )
-#add_definitions(-DGLES2)
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED YES)
 add_executable(server ${SRCS})

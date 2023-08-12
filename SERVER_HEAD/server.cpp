@@ -28,6 +28,7 @@ void server_start() {
   };
   SERVER_SOCKET.sin_family = AF_INET;
   SERVER_SOCKET.sin_port = htons(SERVER_CONFIG_t.portNumber);
+
   if (inet_pton(AF_INET, SERVER_CONFIG_t.ipAddress, &SERVER_SOCKET.sin_addr) == 1){ std::cout<<VT100_COLOR_GREEN<<"Network IP conversion sucess"<<VT100_COLOR_RESET<<std::endl; }
   else{ std::cout<<VT100_COLOR_RED<<"Error converting IP address to Network format (might be due to error in config file format[.IN-config.in in -IP-ADDRESS] or IP format) "<<strerror(errno)<<VT100_COLOR_RESET<<std::endl; return;};
 
