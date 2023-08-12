@@ -25,9 +25,7 @@ if(parse == true){
                      std::cout<<VT100_COLOR_BLUE<<"create config file now enter 1 else 0            "<<VT100_COLOR_RESET;
                      std::cin >> WRITEHALT;
                        if(WRITEHALT == 1){
-                   SERVER_CONFIG_DATA = IN_CONFIG_PATH;
-                   SERVER_CONFIG_DATA += in_server_file;
-                   Bashfile.open(SERVER_CONFIG_DATA , std::ios::out);
+                      Bashfile.open(SERVER_CONFIG_DATA , std::ios::out);
                       if(Bashfile.is_open()){
                           write_config_file(Bashfile);
                           Bashfile.close();
@@ -105,7 +103,7 @@ SERVER_CONFIG_DATA += in_server_file;
 
 Bashfile.open(SERVER_CONFIG_DATA , std::ios::out); // to open IN-config path
        if(Bashfile.is_open()){
-  //            write_config_file(Bashfile);
+              write_config_file(Bashfile);
               Bashfile.close();
               std::cout<<VT100_COLOR_GREEN<<"IN_config.in file writing sucess"<<std::endl;
               std::cout<<VT100_COLOR_GREEN<<"IN_config.in file path"<<SERVER_CONFIG_DATA<<std::endl;
@@ -138,5 +136,5 @@ std::cout<<VT100_COLOR_RED<<"IN-CONFIG.IN writing error "<<std::endl;
 }
 }
 std::cout<<VT100_COLOR_RESET;
-return 0;
+return 1;
 }

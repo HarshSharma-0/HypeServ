@@ -1,6 +1,6 @@
 #include "parse_config.hpp"
 
-int write_config_file(std::fstream& in_config_write){
+void write_config_file(std::fstream& in_config_write){
 
  std::cout << "***************** SERVER SETUP *********************"<< std::endl;
   in_config_write<<"SERVER:"<<"\n";
@@ -33,7 +33,7 @@ int write_config_file(std::fstream& in_config_write){
 
   std::cout << "\033[1;33mlocalhost (1/0)(default 0)"<< "                 ";
   in_config_write<<"-LOCAL-HOST     <"<<SERVER_CONFIG_DATA<<">\n";
-  std::cin >> SERVER_CONFIG_DATA;  
+  std::cin >> SERVER_CONFIG_DATA;
   std::cin.clear();
   std::cout << "\x1b[Alaunch localhost server         "<< "           ";
   (SERVER_CONFIG_DATA == "1") ? std::cout << "\033[1;32mTRUE" << std::endl
@@ -86,5 +86,5 @@ int write_config_file(std::fstream& in_config_write){
   in_config_write<<"@end<\n";
   std::cout << "\033[0m****************************************************"<< std::endl;
 
-return 0;
+
 }

@@ -5,8 +5,8 @@
 #include <VT100.hpp>
 #include <string>
 #include <cstdlib>
-extern int parse_config_file(std::fstream& in_config_parse);
-extern int write_config_file(std::fstream& in_config_write);
+extern void parse_config_file(std::fstream& in_config_parse);
+extern void write_config_file(std::fstream& in_config_write);
 extern std::string SERVER_CONFIG_DATA;  //holder of user input path or env to  configration file path
 inline void BREAK_HALT(std::fstream& FILE_DATA){
 SERVER_CONFIG_DATA.clear();
