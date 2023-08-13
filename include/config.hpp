@@ -1,4 +1,5 @@
 #ifndef CONFIG
 #define CONFIG
-extern int setup_config_path(bool parse);
+#include "parse_config.hpp"
+extern int setup_config_path(bool parse, std::string& PATH);
 #endif

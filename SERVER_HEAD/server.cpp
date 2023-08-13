@@ -7,11 +7,9 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <unistd.h>
-#include <pthread.h>
 #include <stdio.h>
 #include <sys/socket.h>
-#include <iostream>
-#include <fstream>
+#include "config.hpp"
 #include "server.hpp"
 #include "VT100.hpp"
 

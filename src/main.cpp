@@ -12,7 +12,7 @@ int main() {
      if (config_path != NULL) {
        IN_PATH = config_path;
        std::cout<<VT100_COLOR_GREEN<<"PATH set to "<<IN_PATH<<VT100_COLOR_RESET<<std::endl;
-        ServerStart = setup_config_path(true);
+        ServerStart = setup_config_path(true,IN_PATH);
     }
     else{
        std::cout<<VT100_COLOR_RED<< "Please setup IN_SERVER variable path"<<VT100_COLOR_RESET<<std::endl;
@@ -20,7 +20,7 @@ int main() {
        std::cin>>path_setup;
  }
 if(path_setup==1){
- ServerStart = setup_config_path(false);
+ ServerStart = setup_config_path(false,IN_PATH);
 }
 if(ServerStart == 1 && parse_true == true){
 server_start();

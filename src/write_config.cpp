@@ -2,7 +2,7 @@
 
 void write_config_file(std::fstream& in_config_write){
 
- std::cout << "***************** SERVER SETUP *********************"<< std::endl;
+  std::cout << "***************** SERVER SETUP *********************"<< std::endl;
   in_config_write<<"SERVER:"<<"\n";
   std::cout <<VT100_COLOR_YELLOW<<"SERVER NAME                                "<<VT100_COLOR_GREEN;
   std::cin >> UNIVERSAL_DATA_STRING;
@@ -85,6 +85,6 @@ void write_config_file(std::fstream& in_config_write){
 
   in_config_write<<"@end<\n";
   std::cout << "\033[0m****************************************************"<< std::endl;
-
+  in_config_write.close();
 
 }
