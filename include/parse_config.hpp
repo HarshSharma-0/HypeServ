@@ -7,9 +7,5 @@
 #include <cstdlib>
 extern void parse_config_file(std::fstream& in_config_parse);
 extern void write_config_file(std::fstream& in_config_write);
-extern std::string SERVER_CONFIG_DATA;  //holder of user input path or env to  configration file path
-inline void BREAK_HALT(std::fstream& FILE_DATA){
-SERVER_CONFIG_DATA.clear();
-std::getline(FILE_DATA,SERVER_CONFIG_DATA,'>');
-}
+extern std::string UNIVERSAL_DATA_STRING;  //holder of user input path or env to  configration file path
 #endif

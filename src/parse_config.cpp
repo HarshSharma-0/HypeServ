@@ -1,7 +1,13 @@
 #include "parse_config.hpp"
 #include "server.hpp"
 
+void BREAK_HALT(std::fstream& FILE_DATA ,int tag_extraction);
+char* allocateAndCopy(char*& parse_store, std::string& parseValue);
+
+
+
 void parse_config_file(std::fstream& in_config_parse){
+
 int check_hit {0};
 bool parse_stop = false;
 bool parse_stop_server = false;
@@ -10,70 +16,50 @@ bool parse_stop_worker = false;
 
 while (parse_stop != true){ //parser condition
 
-SERVER_CONFIG_DATA.clear(); //clearing the buffer
-if(!std::getline(in_config_parse,SERVER_CONFIG_DATA,'\n')){std::cout<<VT100_COLOR_RED<<"EOF reached and parsing unsucessfull"<<VT100_COLOR_RESET<<std::endl; parse_true = false; return;}  //reading from file the first line
+UNIVERSAL_DATA_STRING.clear(); //clearing the buffer
+if(!std::getline(in_config_parse,UNIVERSAL_DATA_STRING,'\n')){std::cout<<VT100_COLOR_RED<<"EOF reached and parsing unsucessfull"<<VT100_COLOR_RESET<<std::endl; parse_true = false; return;}  //reading from file the first line
 
-if(SERVER_CONFIG_DATA == "SERVER:"){    //checking for SERVER LABEL
+if(UNIVERSAL_DATA_STRING == "SERVER:"){    //checking for SERVER LABEL
 
      while (parse_stop_server !=true ){    //server lable parser
 
-SERVER_CONFIG_DATA.clear();                               //clearing the buffer
-std::getline(in_config_parse,SERVER_CONFIG_DATA,'<');    // checking for tag data
-
-SERVER_CONFIG_DATA.erase(std::remove(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),' '),SERVER_CONFIG_DATA.end());         // erasing soaces from data
-SERVER_CONFIG_DATA.erase(std::remove(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),'\n'),SERVER_CONFIG_DATA.end());       // erasing \n marker from data
-
+    BREAK_HALT(in_config_parse,1);
 // ********************************************************* checking the buffer if matched with any of the tag  ********************************************************
 
 
-              if (SERVER_CONFIG_DATA == "-SERVER-NAME"){
-                    BREAK_HALT(in_config_parse);
-                    SERVER_CONFIG_t.serverName = new char[SERVER_CONFIG_DATA.size()+1];
-                    if (SERVER_CONFIG_t.serverName == nullptr) { std::cout<<VT100_COLOR_RED<<"While parsing memory allcocation failed for serverName"<<VT100_COLOR_RESET<<std::endl; return; }
-                    std::copy(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),SERVER_CONFIG_t.serverName);
-                    SERVER_CONFIG_t.serverName[SERVER_CONFIG_DATA.size()] = '\0'; // Null-terminate the string
+              if (UNIVERSAL_DATA_STRING == "-SERVER-NAME"){
+                    BREAK_HALT(in_config_parse,0);
+                    SERVER_CONFIG_t.serverName = allocateAndCopy(SERVER_CONFIG_t.serverName,UNIVERSAL_DATA_STRING); // Null-terminate the string
                    }
-              else if (SERVER_CONFIG_DATA == "-PORT-NUMBER"){
-                    BREAK_HALT(in_config_parse);
-                    SERVER_CONFIG_t.portNumber = std::stoi(SERVER_CONFIG_DATA);
+              else if (UNIVERSAL_DATA_STRING == "-PORT-NUMBER"){
+                    BREAK_HALT(in_config_parse,0);
+                    SERVER_CONFIG_t.portNumber = std::stoi(UNIVERSAL_DATA_STRING);
                    }
-              else if (SERVER_CONFIG_DATA == "-IP-ADDRESS"){
-                   BREAK_HALT(in_config_parse);
-                   SERVER_CONFIG_t.ipAddress = new char[SERVER_CONFIG_DATA.size()+1];
-                   if (SERVER_CONFIG_t.ipAddress == nullptr){ std::cout<<VT100_TEXT_BLINK<<VT100_COLOR_RED<<"While parsing memory allcocation failed for serveripaddress"<<VT100_COLOR_RESET<<std::endl; return;}
-                   std::copy(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),SERVER_CONFIG_t.ipAddress);
-                   SERVER_CONFIG_t.ipAddress[SERVER_CONFIG_DATA.size()] = '\0'; // Null-terminate the string 
+              else if (UNIVERSAL_DATA_STRING == "-IP-ADDRESS"){
+                   BREAK_HALT(in_config_parse,0);
+                   SERVER_CONFIG_t.ipAddress = allocateAndCopy(SERVER_CONFIG_t.ipAddress,UNIVERSAL_DATA_STRING);
                    }
-              else if(SERVER_CONFIG_DATA == "-MOUNT-PATH"){
-                   BREAK_HALT(in_config_parse);
-                   SERVER_CONFIG_t.mountPath = new char[SERVER_CONFIG_DATA.size()+1];
-                   if (SERVER_CONFIG_t.mountPath == nullptr) { std::cout<<VT100_COLOR_RED<<" While parsing memory allcocation failed for mountPath"<<VT100_COLOR_RESET<<std::endl; return;}
-                   std::copy(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),SERVER_CONFIG_t.mountPath);
-                   SERVER_CONFIG_t.mountPath[SERVER_CONFIG_DATA.size()] = '\0'; // Null-terminate the string
+              else if(UNIVERSAL_DATA_STRING == "-MOUNT-PATH"){
+                   BREAK_HALT(in_config_parse,0);
+                   SERVER_CONFIG_t.mountPath = allocateAndCopy(SERVER_CONFIG_t.mountPath,UNIVERSAL_DATA_STRING);
                    }
-              else if(SERVER_CONFIG_DATA == "-LOCAL-HOST"){
-                   BREAK_HALT(in_config_parse);
-                   SERVER_CONFIG_t.isLocalHost = (SERVER_CONFIG_DATA == "1") ? true : false ;
+              else if(UNIVERSAL_DATA_STRING == "-LOCAL-HOST"){
+                   BREAK_HALT(in_config_parse,0);
+                   SERVER_CONFIG_t.isLocalHost = (UNIVERSAL_DATA_STRING == "1") ? true : false ;
                    }
-              else if(SERVER_CONFIG_DATA == "-PROTOCOL-HTTPs"){
-                   BREAK_HALT(in_config_parse);
-                   SERVER_CONFIG_t.protocolHttps = (SERVER_CONFIG_DATA == "1") ? true : false ;
+              else if(UNIVERSAL_DATA_STRING == "-PROTOCOL-HTTPs"){
+                   BREAK_HALT(in_config_parse,0);
+                   SERVER_CONFIG_t.protocolHttps = (UNIVERSAL_DATA_STRING == "1") ? true : false ;
                    }
-              else if (SERVER_CONFIG_DATA == "-PROXY"){
-                   BREAK_HALT(in_config_parse);
-                   SERVER_CONFIG_t.proxy = new char[SERVER_CONFIG_DATA.size()+1];
-                   if (SERVER_CONFIG_t.proxy == nullptr){ std::cout<<VT100_TEXT_BLINK<<VT100_COLOR_RED<<"While parsing memory allcocation failed for serverProxy"<<VT100_COLOR_RESET<<std::endl; return;}
-                   std::copy(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),SERVER_CONFIG_t.proxy);
-                   SERVER_CONFIG_t.proxy[SERVER_CONFIG_DATA.size()] = '\0'; // Null-terminate the string 
+              else if (UNIVERSAL_DATA_STRING == "-PROXY"){
+                   BREAK_HALT(in_config_parse,0);
+                   SERVER_CONFIG_t.proxy = allocateAndCopy(SERVER_CONFIG_t.proxy,UNIVERSAL_DATA_STRING);
                    }
-              else if (SERVER_CONFIG_DATA == "-INTERNAL-DNS-RESOLVER"){
-                   BREAK_HALT(in_config_parse);
-                   SERVER_CONFIG_t.internalDnsResolver = new char[SERVER_CONFIG_DATA.size()+1];
-                   if (SERVER_CONFIG_t.internalDnsResolver == nullptr){ std::cout<<VT100_TEXT_BLINK<<VT100_COLOR_RED<<"While parsing memory allcocation failed for serverinternalDnsResolver"<<VT100_COLOR_RESET<<std::endl; return;}
-                   std::copy(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),SERVER_CONFIG_t.internalDnsResolver);
-                   SERVER_CONFIG_t.internalDnsResolver[SERVER_CONFIG_DATA.size()] = '\0'; // Null-terminate the string
+              else if (UNIVERSAL_DATA_STRING == "-INTERNAL-DNS-RESOLVER"){
+                   BREAK_HALT(in_config_parse,0);
+                   SERVER_CONFIG_t.internalDnsResolver = allocateAndCopy(SERVER_CONFIG_t.internalDnsResolver,UNIVERSAL_DATA_STRING);
                    }
-              else if(SERVER_CONFIG_DATA == "@end"){
+              else if(UNIVERSAL_DATA_STRING == "@end"){
                    parse_stop_server = true;
                    }else{ check_hit++ ; if(check_hit == 1){std::cout<<VT100_COLOR_RED<<"Parsing error please see or correct syntax or variable name of file in SERVER: tag section"<<VT100_COLOR_RESET; check_hit = 0; parse_true = false; return;} continue;}
 
@@ -83,30 +69,23 @@ SERVER_CONFIG_DATA.erase(std::remove(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DA
 
 // *************************************************** checking buffer for WORKER tag *********************************************************************************
 
-else if ( SERVER_CONFIG_DATA == "WORKER:" ) {
+else if ( UNIVERSAL_DATA_STRING == "WORKER:" ) {
 
            while( parse_stop_worker != true ){
-                  SERVER_CONFIG_DATA.clear();
-                  std::getline(in_config_parse,SERVER_CONFIG_DATA,'<');
-                  SERVER_CONFIG_DATA.erase(std::remove(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),' '),SERVER_CONFIG_DATA.end());
-                  SERVER_CONFIG_DATA.erase(std::remove(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),'\n'),SERVER_CONFIG_DATA.end());
-
-                    if (SERVER_CONFIG_DATA == "-DESIRED-WORKER-NO") {
-                          BREAK_HALT(in_config_parse);
-                          SERVER_CONFIG_t.WORKER.desiredWorkerNo = std::stoi(SERVER_CONFIG_DATA);
+                  BREAK_HALT(in_config_parse,1);
+                    if (UNIVERSAL_DATA_STRING == "-DESIRED-WORKER-NO") {
+                          BREAK_HALT(in_config_parse,0);
+                          SERVER_CONFIG_t.WORKER.desiredWorkerNo = std::stoi(UNIVERSAL_DATA_STRING);
                        }
-                    else if( SERVER_CONFIG_DATA == "-CONNECTION-PER-WORKER"){
-                          BREAK_HALT(in_config_parse);
-                          SERVER_CONFIG_t.WORKER.connectionPerWorker = std::stoi(SERVER_CONFIG_DATA);
+                    else if( UNIVERSAL_DATA_STRING == "-CONNECTION-PER-WORKER"){
+                          BREAK_HALT(in_config_parse,0);
+                          SERVER_CONFIG_t.WORKER.connectionPerWorker = std::stoi(UNIVERSAL_DATA_STRING);
                        }
-                    else if (SERVER_CONFIG_DATA == "-MOUNT-PATH-WORKER" ){
-                          BREAK_HALT(in_config_parse);
-                          SERVER_CONFIG_t.WORKER.mountPathWorker = new char[SERVER_CONFIG_DATA.size()+1];
-                          if ( SERVER_CONFIG_t.WORKER.mountPathWorker == nullptr ) { std::cout<<VT100_COLOR_RED<<"While parsing memory allcocation failed for WorkermountPath"<<VT100_COLOR_RESET<<std::endl; return; }
-                          std::copy(SERVER_CONFIG_DATA.begin(),SERVER_CONFIG_DATA.end(),SERVER_CONFIG_t.WORKER.mountPathWorker);
-                          SERVER_CONFIG_t.WORKER.mountPathWorker[SERVER_CONFIG_DATA.size()] = '\0'; // Null-terminate the string
+                    else if (UNIVERSAL_DATA_STRING == "-MOUNT-PATH-WORKER" ){
+                          BREAK_HALT(in_config_parse,0);
+                          SERVER_CONFIG_t.WORKER.mountPathWorker = allocateAndCopy(SERVER_CONFIG_t.WORKER.mountPathWorker,UNIVERSAL_DATA_STRING);
                        }
-                    else if(SERVER_CONFIG_DATA == "@end") {
+                    else if(UNIVERSAL_DATA_STRING == "@end") {
                         parse_stop_worker = true ;
                        }
                     else{ check_hit++ ; if(check_hit == 1){std::cout<<VT100_COLOR_RED<<"Parsing error please see or correct syntax or variable name of file in WORKER: tag section"<<VT100_COLOR_RESET<<std::endl; check_hit = 0; parse_true = false; return;} continue;}
@@ -124,5 +103,35 @@ else{
 continue;
 }
 }
+return;
+}
+
+// ********************************************************************************************************************************************************************
+void BREAK_HALT(std::fstream& FILE_DATA,int tag_extraction){
+
+if(tag_extraction == 1){
+     UNIVERSAL_DATA_STRING.clear();                               //clearing the buffer
+     std::getline(FILE_DATA,UNIVERSAL_DATA_STRING,'<');    // checking for tag data
+     UNIVERSAL_DATA_STRING.erase(std::remove(UNIVERSAL_DATA_STRING.begin(),UNIVERSAL_DATA_STRING.end(),' '),UNIVERSAL_DATA_STRING.end());
+     UNIVERSAL_DATA_STRING.erase(std::remove(UNIVERSAL_DATA_STRING.begin(),UNIVERSAL_DATA_STRING.end(),'\n'),UNIVERSAL_DATA_STRING.end());
 
 }
+else{
+UNIVERSAL_DATA_STRING.clear();
+std::getline(FILE_DATA,UNIVERSAL_DATA_STRING,'>');
+}
+return;
+
+}
+
+// ********************************************************************************************************************************************************************
+
+char* allocateAndCopy(char*& parse_store, std::string& parseValue){
+
+parse_store = new char[parseValue.size()+1];
+std::copy(parseValue.begin(),parseValue.end(),parse_store);
+parse_store[parseValue.size()] = '\0' ;
+return parse_store;
+
+}
+
