@@ -5,7 +5,8 @@
 #include <server.hpp>
 
 int main() {
-    char *config_path= getenv("IN_SERVER");
+    char *config_path {0};
+    config_path = getenv("IN_SERVER");
     std::string IN_PATH = "";
     int path_setup {0};
     int ServerStart {0};
@@ -20,6 +21,7 @@ int main() {
        std::cin>>path_setup;
  }
 if(path_setup==1){
+
  ServerStart = setup_config_path(false,IN_PATH);
 }
 if(ServerStart == 1 && parse_true == true){
