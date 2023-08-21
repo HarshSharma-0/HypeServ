@@ -19,4 +19,5 @@ struct WORKER {
 extern SERVER_CONFIG SERVER_CONFIG_t;
 extern void server_start();
 extern bool parse_true;
+extern void *CLIENT_WORKER(void *args);
 #endif

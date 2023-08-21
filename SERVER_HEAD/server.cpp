@@ -25,18 +25,20 @@ struct WORKER_THREAD_ARGS{
 };
 
 void server_start() {
+
     pthread_t *Thread_ID = new pthread_t[SERVER_CONFIG_t.WORKER.desiredWorkerNo];
     WORKER_THREAD_ARGS *Worker_args = new WORKER_THREAD_ARGS;
     WORKER_CLIENT_FD = new int*[SERVER_CONFIG_t.WORKER.desiredWorkerNo];
     if( WORKER_CLIENT_FD == nullptr) { return; }
-    for (int i = 0; i < rows; i++) {
+    for (int i = 0; i < SERVER_CONFIG_t.WORKER.connectionPerWorker; i++) {
         WORKER_CLIENT_FD[i] = new int[SERVER_CONFIG_t.WORKER.connectionPerWorker];
         if(WORKER_CLIENT_FD[i] == nullptr){ return; }
     }
+   //thread pool creation
+   for(int j = 0 ; j < SERVER_CONFIG_t.WORKER.desiredWorkerNo ; j++){
+         if(pthread_create(&Thread_ID[j] , nullptr , CLIENT_WORKER , nullptr ) != 0){ std::cout<<strerror(errno)<<std::endl; return; }
 
-
-
-
+    }
 
   struct sockaddr_in SERVER_SOCKET, CLIENT_SOCKET;
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
@@ -51,8 +53,8 @@ void server_start() {
 
   socklen_t socket_len = sizeof(SERVER_SOCKET);
 
-  if (bind(server_fd, (struct sockaddr *)&SERVER_SOCKET, socket_len) < 0) {
-    std::cout << "\nerror binding\n";
+if (bind(server_fd, (struct sockaddr *)&SERVER_SOCKET, socket_len) < 0) {
+    std::cout << "\nerror binding\n" <<  ntohs(SERVER_SOCKET.sin_port) << strerror(errno);
     return;
   };
 
