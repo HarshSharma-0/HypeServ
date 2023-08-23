@@ -24,6 +24,7 @@ struct WORKER_THREAD_ARGS{
   int MAX_CLIENT  {0};
   char *MOUNT_PATH  = nullptr;
   int *CFD_DATA  = nullptr ;
+  int *IN_ACTIVE_CFD = nullptr;
   pthread_t worker_id ;
 };
 extern void SIGNAL_SIGINT_HANDLER(int signum);

@@ -16,7 +16,7 @@ SERVER_CONFIG SERVER_CONFIG_t;
 bool parse_true = false;
 int **WORKER_CLIENT_FD = nullptr;
 bool server_shutdown = false;
-WORKER_THREAD_ARGS* args = new WORKER_THREAD_ARGS;
+WORKER_THREAD_ARGS* args = new WORKER_THREAD_ARGS ();
 
 void server_start() {
 
@@ -31,34 +31,37 @@ void server_start() {
     int NON_BLOCKING_FLAG = 0 ;
     int client_fd {0};
     pthread_t *Thread_ID = new pthread_t[SERVER_CONFIG_t.WORKER.desiredWorkerNo];
+    int *SERVER_LOAD = new int[SERVER_CONFIG_t.WORKER.desiredWorkerNo];
 
 
     args-> MOUNT_PATH = SERVER_CONFIG_t.WORKER.mountPathWorker;
     args-> MAX_CLIENT = SERVER_CONFIG_t.WORKER.connectionPerWorker;
+    args-> IN_ACTIVE_CFD = new int[SERVER_CONFIG_t.WORKER.connectionPerWorker]();
+    std::fill_n (args->IN_ACTIVE_CFD,SERVER_CONFIG_t.WORKER.connectionPerWorker, -1 );
 
-    WORKER_CLIENT_FD = new int*[SERVER_CONFIG_t.WORKER.desiredWorkerNo];
+    WORKER_CLIENT_FD = new int*[SERVER_CONFIG_t.WORKER.desiredWorkerNo]();
 
     if( WORKER_CLIENT_FD == nullptr) { return; }
-    for (int i = 0; i < SERVER_CONFIG_t.WORKER.desiredWorkerNo; i++) {
-        WORKER_CLIENT_FD[i] = new int[SERVER_CONFIG_t.WORKER.connectionPerWorker];
+    for (int i = 0; i < SERVER_CONFIG_t.WORKER.desiredWorkerNo ; i++) {
+        WORKER_CLIENT_FD[i] = new int[SERVER_CONFIG_t.WORKER.connectionPerWorker]();
         if(WORKER_CLIENT_FD[i] == nullptr){ return; }
-            for(int K = 0 ; K < SERVER_CONFIG_t.WORKER.connectionPerWorker ; K++){ WORKER_CLIENT_FD[i][K] = K;}
+
     }
 
-   //thread pool creation
    for(int J = 0 ; J < SERVER_CONFIG_t.WORKER.desiredWorkerNo ; J++){
          args-> MOUNT_PATH = SERVER_CONFIG_t.WORKER.mountPathWorker;
          args-> MAX_CLIENT = SERVER_CONFIG_t.WORKER.connectionPerWorker;
-         args->CFD_DATA = &WORKER_CLIENT_FD [J][0];
+         args-> CFD_DATA = &WORKER_CLIENT_FD [J][0];
          if(pthread_create(&Thread_ID [J], nullptr , CLIENT_WORKER , (void*)args) != 0){ std::cout<<strerror(errno)<<std::endl; return; }
-         usleep(50);
-    }
+         sleep(1);
+   }
 
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
   if (server_fd < 0) {
     std::cout << "error createing socket  " << strerror(errno) << std::endl; return;
   };
-  //setting up non-blocking server fd
+
+
   NON_BLOCKING_FLAG = fcntl(server_fd, F_GETFL, 0);
   fcntl(server_fd, F_SETFL, NON_BLOCKING_FLAG | O_NONBLOCK);
 
@@ -90,7 +93,7 @@ void server_start() {
                 server_shutdown = true;
             }
                 server_shutdown = true;
-             }
+            }
                 std::cout << "New connection received from: " << inet_ntoa(CLIENT_SOCKET.sin_addr)<< " Port: " << ntohs(CLIENT_SOCKET.sin_port) << std::endl;
                 close(client_fd);
 
