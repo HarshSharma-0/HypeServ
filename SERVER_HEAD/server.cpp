@@ -15,6 +15,7 @@
 SERVER_CONFIG SERVER_CONFIG_t;
 bool parse_true = false;
 int **WORKER_CLIENT_FD = nullptr;
+int **WORKER_CLOSED_INDEX = nullptr;
 bool server_shutdown = false;
 WORKER_THREAD_ARGS* args = new WORKER_THREAD_ARGS ();
 
@@ -36,10 +37,10 @@ void server_start() {
 
     args-> MOUNT_PATH = SERVER_CONFIG_t.WORKER.mountPathWorker;
     args-> MAX_CLIENT = SERVER_CONFIG_t.WORKER.connectionPerWorker;
-    args-> IN_ACTIVE_CFD = new int[SERVER_CONFIG_t.WORKER.connectionPerWorker]();
-    std::fill_n (args->IN_ACTIVE_CFD,SERVER_CONFIG_t.WORKER.connectionPerWorker, -1 );
+
 
     WORKER_CLIENT_FD = new int*[SERVER_CONFIG_t.WORKER.desiredWorkerNo]();
+    WORKER_CLOSED_INDEX = new int*[SERVER_CONFIG_t.WORKER.desiredWorkerNo]();
 
     if( WORKER_CLIENT_FD == nullptr) { return; }
     for (int i = 0; i < SERVER_CONFIG_t.WORKER.desiredWorkerNo ; i++) {
@@ -52,8 +53,16 @@ void server_start() {
          args-> MOUNT_PATH = SERVER_CONFIG_t.WORKER.mountPathWorker;
          args-> MAX_CLIENT = SERVER_CONFIG_t.WORKER.connectionPerWorker;
          args-> CFD_DATA = &WORKER_CLIENT_FD [J][0];
+         args-> IN_ACTIVE_CFD = new int[SERVER_CONFIG_t.WORKER.connectionPerWorker]();
+         WORKER_CLOSED_INDEX [J] = args->IN_ACTIVE_CFD;
+         std::fill_n (args->IN_ACTIVE_CFD,SERVER_CONFIG_t.WORKER.connectionPerWorker, J );
+       std::cout<<"\nclosed_fd :- ";
+        for(int i= 0; i< SERVER_CONFIG_t.WORKER.desiredWorkerNo;i++){
+         std::cout<<" "<<WORKER_CLOSED_INDEX[J][i]<<" ";}
+
          if(pthread_create(&Thread_ID [J], nullptr , CLIENT_WORKER , (void*)args) != 0){ std::cout<<strerror(errno)<<std::endl; return; }
-         sleep(1);
+         sleep(2);
+//      std::cout<<"closed_fd :-"<<WORKER_CLOSED_INDEX[J][J];
    }
 
   int server_fd = socket(AF_INET, SOCK_STREAM, 0);
