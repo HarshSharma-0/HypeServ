@@ -4,6 +4,7 @@
 #include <pthread.h>
 #include <unistd.h>
 #include <csignal>
+#include <atomic>
 
 struct SERVER_CONFIG {
     char* serverName = nullptr;
@@ -26,6 +27,7 @@ struct WORKER_THREAD_ARGS{
   int *CFD_DATA  = nullptr ;
   int *IN_ACTIVE_CFD = nullptr;
   pthread_t worker_id ;
+  int worker_index = NULL ;
 };
 extern void SIGNAL_SIGINT_HANDLER(int signum);
 extern SERVER_CONFIG SERVER_CONFIG_t;
@@ -33,4 +35,6 @@ extern void server_start();
 extern bool parse_true;
 extern void *CLIENT_WORKER(void *args);
 extern bool server_shutdown;
+extern std::atomic<std::int_fast32_t> INTERRUPT_WORKER_CNT;
+extern std::atomic<std::int_fast8_t> INTERRUPT_ACTIVE;
 #endif
